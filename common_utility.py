@@ -65,3 +65,33 @@ def run_aa_tools(*args):
 
     return result
 
+
+def run_fastq_filter(seqs, gc_bounds=(0,100), length_bounds=(0, 2**32), quality_threshold=0):
+    """
+    Main function for fastq files processing.
+    Parameters: seqs - input dictionary with fastq files.
+                gc_bounds - boundaries for filtering according to GC content. Default - (0,100).
+                length_bounds - boundaries for filtering according to sequences length. Default - (0, 2**32).
+                quality_threshold -boundaries for filtering according to sequences quality. Default - 0.
+    Returns: Dictionary with filtered fastq files.
+    """
+    if not isinstance(gc_bounds, tuple):
+        gc_bounds = (0, gc_bounds)
+
+    if not isinstance(length_bounds, tuple):
+        length_bounds = (0, length_bounds)
+
+    gc_contents = calculate_gc(seqs)
+    seq_lenghts = calculate_length(seqs)
+    quality_contents = calculate_quality(seqs)
+
+    filtered_seqs = {}
+
+    for key, gc_content, seq_length, quality_content in zip(seqs.keys(), gc_contents, seq_lenghts, quality_contents):
+        if gc_bounds[0] <= gc_content <= gc_bounds[1] and \
+           length_bounds[0] <= seq_length <= length_bounds[1] and \
+           quality_content > quality_threshold:
+                filtered_seqs[key] = seqs[key]
+    result = "\n".join([f'{key}: {value[0]}, {value[1]}' for key, value in filtered_seqs.items()])
+
+    return result
