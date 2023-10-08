@@ -1,7 +1,7 @@
-# SeqMate
-This readme describes the user-friendly program SeqMate for performing various operations with fastq files, nucleic and amino acid sequences.
+# common_utility
+This readme describes the user-friendly program common_utility.py for performing various operations with fastq files, nucleic and amino acid sequences.
 
-SeqMate can perform different operations:
+common_utility.py can perform different operations:
 * Transcribe, reverse, complement, reverse_complement DNA or RNA sequences
 * Find for a particular amino acid(s) in the entire amino acid sequence(s)
 * Calculate amino acid's occurrence in amino acid sequences
