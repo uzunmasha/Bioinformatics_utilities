@@ -1,7 +1,7 @@
 from modules.dna_rna import check_nucleotides, transcribe, reverse, complement, reverse_complement
 from modules.amino_acids import aa_pattern_position, count_pattern_in_aa_sequences
-from modules.fastq import calculate_gc, calculate_length, calculate_quality
-
+from modules.fastq import read_fastq_file, write_filtered_fastq, calculate_gc, calculate_length, calculate_quality
+import os
 
 def run_dna_rna_tools(*args):
     """
@@ -66,14 +66,14 @@ def run_aa_tools(*args):
     return result
 
 
-def run_fastq_filter(seqs, gc_bounds=(0,100), length_bounds=(0, 2**32), quality_threshold=0):
+def run_fastq_filter(input_path: str, gc_bounds: tuple, length_bounds: tuple, quality_threshold: float, output_filename: str):
     """
     Main function for fastq files processing.
     Parameters: seqs - input dictionary with fastq files.
                 gc_bounds - boundaries for filtering according to GC content. Default - (0,100).
                 length_bounds - boundaries for filtering according to sequences length. Default - (0, 2**32).
                 quality_threshold -boundaries for filtering according to sequences quality. Default - 0.
-    Returns: Dictionary with filtered fastq files.
+    Returns: fastq file with filtered data.
     """
     if not isinstance(gc_bounds, tuple):
         gc_bounds = (0, gc_bounds)
@@ -81,17 +81,28 @@ def run_fastq_filter(seqs, gc_bounds=(0,100), length_bounds=(0, 2**32), quality_
     if not isinstance(length_bounds, tuple):
         length_bounds = (0, length_bounds)
 
-    gc_contents = calculate_gc(seqs)
-    seq_lenghts = calculate_length(seqs)
-    quality_contents = calculate_quality(seqs)
-
+    seqs = read_fastq_file(input_path)
     filtered_seqs = {}
 
-    for key, gc_content, seq_length, quality_content in zip(seqs.keys(), gc_contents, seq_lenghts, quality_contents):
+    gc_contents = calculate_gc(seqs)
+    seq_lengths = calculate_length(seqs)
+    quality_scores = calculate_quality(seqs)
+
+    for key, value in seqs.items():
+        gc_content = gc_contents.pop(0)
+        seq_length = seq_lengths.pop(0)
+        quality_score = quality_scores.pop(0)
+
         if gc_bounds[0] <= gc_content <= gc_bounds[1] and \
            length_bounds[0] <= seq_length <= length_bounds[1] and \
-           quality_content > quality_threshold:
-                filtered_seqs[key] = seqs[key]
-    result = "\n".join([f'{key}: {value[0]}, {value[1]}' for key, value in filtered_seqs.items()])
+           quality_score >= quality_threshold:
+            filtered_seqs[key] = value
 
-    return result
+    if output_filename is None:
+        output_filename = f"filtered_{input_path}"
+    elif not output_filename.endswith('.fastq'):
+        output_filename += '.fastq'
+
+    write_filtered_fastq(filtered_seqs, input_path, output_filename)
+
+    return "Filtered data was saved into output file"
