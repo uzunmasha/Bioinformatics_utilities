@@ -17,6 +17,24 @@ def read_fastq_file(input_path: str) -> dict:
     return seqs
 
 
+def write_filtered_fastq(filtered_seqs: dict, input_path: str, output_filename: str):
+    """
+    Writes the filtered FASTQ data to a file in the 'fastq_filtered_results' folder
+    """
+    if output_filename is None:
+        output_filename = os.path.splitext(os.path.basename(input_path))[0]
+
+    output_directory = 'fastq_filtered_results'
+    if not os.path.exists(output_directory):
+        os.makedirs(output_directory)
+
+    output_path = os.path.join(output_directory, output_filename)
+
+    with open(output_path, mode='w') as output_file:
+        for key, value in filtered_seqs.items():
+            output_file.write(f'{key}\n{value[0]}\n{value[1]}\n{value[2]}\n')
+
+
 def calculate_gc(seqs: dict) -> list:
     """
     Calculate the GC content for given sequences.
