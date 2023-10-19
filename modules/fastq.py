@@ -1,3 +1,22 @@
+def read_fastq_file(input_path: str) -> dict:
+    """
+    Reads a FASTQ file and returns the data as a dictionary.
+    """
+    seqs = {}
+    with open(input_path, mode='r') as fastq_file:
+        lines = fastq_file.readlines()
+        i = 0
+        while i < len(lines):
+            if lines[i].startswith("@"):
+                name = lines[i].strip()
+                sequence = lines[i + 1].strip()
+                comment = lines[i + 2].strip()
+                quality = lines[i + 3].strip()
+                seqs[name] = (sequence, comment, quality)
+                i += 4
+    return seqs
+
+
 def calculate_gc(seqs: dict) -> list:
     """
     Calculate the GC content for given sequences.
