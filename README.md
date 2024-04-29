@@ -3,7 +3,7 @@ This repository contains homework scripts developed in the Python course at the 
 
 ### bioseq.py
 This script provides various functionalities for working with biological data.
-* `RNASequence/DNASequence/AminoAcidSequence classes` *
+* `RNASequence/DNASequence/AminoAcidSequence` classes *
 
 Assists in working with DNA, RNA, and amino acid sequencing data. 
 * `filter_fastq` function
@@ -17,7 +17,7 @@ Uses the [Genscan](http://hollywood.mit.edu/GENSCAN.html) prediction tool for DN
 Sends messages and log files of run scripts to a Telegram chat for notification purposes. Implementation of this function was based on [Telegram bot API](https://core.telegram.org/bots/api).
 
 ### bio_files_processor.py
-* `convert_multiline_fasta_to_oneline`
+* `convert_multiline_fasta_to_oneline` function
 
 Converts any number of DNA/RNA/protein sequences in FASTA file from multi-line FASTA files into one-line FASTA format.
 * `OpenFasta` context manager *
