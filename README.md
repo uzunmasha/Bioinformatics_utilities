@@ -42,4 +42,9 @@ Studying Python with your engaging lectures, helpful consultations, and challeng
 
 I've had an amazing time, and I can't thank you enough for it!
 
-✨✨✨
+💅💅💅
+
+**P.S.**
+
+![gbk_parser](https://github.com/uzunmasha/Bioinformatics_utilities/assets/44806106/4c24a112-30c8-4a0c-ba7e-658c43d6c5b9)
+
