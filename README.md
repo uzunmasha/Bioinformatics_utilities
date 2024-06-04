@@ -1,37 +1,36 @@
-# bio_files_processor
-This readme describes the program `bio_files_processor` converts a multi-line FASTA file into a one-line FASTA format.
+# Bioinformatics_utilities
+This repository contains homework scripts developed in the Python course at the [Bioinformatics Institute](https://bioinf.me/education/program) during the 2023-2024 academic year. Code with examples in the showcases.py notebook is marked with *.
 
-## Usage
-1. Clone this repo using SSH or HTTPS with the modules directory:
-```bash
-git clone git@github.com:uzunmasha/Bioinformatics_utilities.git
-``` 
-**or**
-```bash
-git clone https://github.com/uzunmasha/Bioinformatics_utilities.git
-``` 
-2. Launch the program with the required function (listed below) in a code interpreter like Jupyter Notebook.
-3. Enjoy your results!
+### bioseq.py
+This script provides various functionalities for working with biological data.
+* `RNASequence/DNASequence/AminoAcidSequence` classes *
 
-## List of functions
-### convert_multiline_fasta_to_oneline
-This function calculates sequences GC content, length, and quality and filters fastq sequences according to counted values. As input, it takes four parameters:
-* **input_fasta** - eads the input FASTA file, in which the sequence (DNA/RNA/protein/...) can be split into multiple lines. An example can be found [here](https://github.com/Python-BI-2023/HW6_Files/blob/main/example_data/example_multiline_fasta.fasta)
-* **output_fasta** - saves sequence data to a new FASTA file in which each sequence fits into a single line.
+Assists in working with DNA, RNA, and amino acid sequencing data. 
+* `filter_fastq` function
 
-Usage:
-```python
-convert_multiline_fasta_to_oneline(input_fasta = "example_multiline_fasta.fasta", output_fasta = 'myfasta') # fasta file of converted sequences
-```
-  
-## Troubleshooting
-* Argument `input_fasta` takes a full path to the input file (in quotes) if you are running the code from another directory. Or you can give only the file's name if you are in the same directory.
-* Argument `output_fasta` should have a name in quotes or None.
+Filters FASTQ files based on GC content, sequence length, and quality threshold.
+* `run_genscan` function *
 
-**In case of non-working code:**
+Uses the [Genscan](http://hollywood.mit.edu/GENSCAN.html) prediction tool for DNA sequences, and extracts predicted peptide sequences, intron, and exon information.
+* `telegram_logger` decorator
 
-* Report any problems directly to the GitHub issue tracker
+Sends messages and log files of run scripts to a Telegram chat for notification purposes. Implementation of this function was based on [Telegram bot API](https://core.telegram.org/bots/api).
 
-or
+### bio_files_processor.py
+* `convert_multiline_fasta_to_oneline` function
 
-* Send your feedback to uzunmasha@gmail.com
+Converts any number of DNA/RNA/protein sequences in FASTA file from multi-line FASTA files into one-line FASTA format.
+* `OpenFasta` context manager *
+
+Opens FASTA files, like the `open` built-in function. Returns separate FASTA records including ID, description, and sequence.
+
+### custom_random_forest.py
+* `RandomForestClassifierCustom` class *
+
+Allows to apply parallelization for custom random forest class for faster usage
+
+### test_modules.py
+Contains tests to verify the functionality of the code in `bioseq.py` and `bio_files_processor.py`
+
+### showcases.py
+Demonstrates examples of using functions and classes from other files in the repository.
