@@ -168,48 +168,6 @@ class AminoAcidSequence(BiologicalSequence):
         return profile
 
 
-def filter_fastq(input_path: str, gc_lower_bound: float = 0, gc_upper_bound: float = 100,
-                 length_lower_bound: float = 0, length_upper_bound: float = float('inf'),
-                 quality_threshold: int = 0, output_filename: str = None) -> None:
-    """
-    Filters a FASTQ file based on GC content, sequence length, and quality threshold using Biopython.
-
-    Args:
-    - input_path (str): Path to the input FASTQ file.
-    - gc_bounds (tuple): Tuple specifying the minimum and maximum GC content for filtering. Default is (0, 100).
-    - length_bounds (tuple): Tuple specifying the minimum and maximum sequence length for filtering. Default is (0, infinity).
-    - quality_threshold (float): Minimum quality score for filtering. Default is 0.
-    - output_filename (str): Name of the output file. If None, the default filename will be used.
-
-    Returns:
-    - str: Message indicating the success of the filtering process.
-    """
-    filtered_seqs = []
-
-    with open(input_path, 'r') as fastq_file:
-        for record in SeqIO.parse(fastq_file, 'fastq'):
-            gc_content = gc_fraction(record.seq)
-            seq_length = len(record.seq)
-            quality_score = sum(record.letter_annotations["phred_quality"]) / seq_length
-
-            if (
-                gc_bounds[0] <= gc_content <= gc_bounds[1] and
-                length_bounds[0] <= seq_length <= length_bounds[1] and
-                quality_score >= quality_threshold
-            ):
-                filtered_seqs.append(record)
-
-    if output_filename is None:
-        output_filename = f"filtered_{input_path}"
-    elif not output_filename.endswith('.fastq'):
-        output_filename += '.fastq'
-
-    with open(output_filename, 'w') as output_file:
-        SeqIO.write(filtered_seqs, output_file, 'fastq')
-
-    return "Filtered data was saved into output file"
-
-
 @dataclass
 class GenscanOutput:
     """
@@ -395,3 +353,45 @@ def telegram_logger(chat_id: str):
                 send_telegram_message(chat_id, message, log_content, filename)
         return wrapper
     return decorator
+
+
+def filter_fastq(input_path: str, gc_lower_bound: float = 0, gc_upper_bound: float = 100,
+                 length_lower_bound: float = 0, length_upper_bound: float = float('inf'),
+                 quality_threshold: int = 0, output_filename: str = None) -> None:
+    """
+    Filters a FASTQ file based on GC content, sequence length, and quality threshold using Biopython.
+
+    Args:
+    - input_path (str): Path to the input FASTQ file.
+    - gc_bounds (tuple): Tuple specifying the minimum and maximum GC content for filtering. Default is (0, 100).
+    - length_bounds (tuple): Tuple specifying the minimum and maximum sequence length for filtering. Default is (0, infinity).
+    - quality_threshold (float): Minimum quality score for filtering. Default is 0.
+    - output_filename (str): Name of the output file. If None, the default filename will be used.
+
+    Returns:
+    - str: Message indicating the success of the filtering process.
+    """
+    filtered_seqs = []
+
+    with open(input_path, 'r') as fastq_file:
+        for record in SeqIO.parse(fastq_file, 'fastq'):
+            gc_content = gc_fraction(record.seq)
+            seq_length = len(record.seq)
+            quality_score = sum(record.letter_annotations["phred_quality"]) / seq_length
+
+            if (
+                gc_bounds[0] <= gc_content <= gc_bounds[1] and
+                length_bounds[0] <= seq_length <= length_bounds[1] and
+                quality_score >= quality_threshold
+            ):
+                filtered_seqs.append(record)
+
+    if output_filename is None:
+        output_filename = f"filtered_{input_path}"
+    elif not output_filename.endswith('.fastq'):
+        output_filename += '.fastq'
+
+    with open(output_filename, 'w') as output_file:
+        SeqIO.write(filtered_seqs, output_file, 'fastq')
+
+    return "Filtered data was saved into output file"

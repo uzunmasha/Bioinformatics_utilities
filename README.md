@@ -34,17 +34,3 @@ Contains tests to verify the functionality of the code in `bioseq.py` and `bio_f
 
 ### showcases.py
 Demonstrates examples of using functions and classes from other files in the repository.
-
-### Gratitudes
-As a student of this course, I want to express my gratitude to the entire team behind this course. 
-
-Studying Python with your engaging lectures, helpful consultations, and challenging but interesting homework assignments has truly been an incredible experience.
-
-I've had an amazing time, and I can't thank you enough for it!
-
-💅💅💅
-
-**P.S.**
-
-![gbk_parser](https://github.com/uzunmasha/Bioinformatics_utilities/assets/44806106/4c24a112-30c8-4a0c-ba7e-658c43d6c5b9)
-
